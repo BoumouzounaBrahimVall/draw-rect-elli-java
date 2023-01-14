@@ -19,14 +19,10 @@ public class Planch extends WindowAdapter implements MouseListener, ItemListener
 	public Planch()
 	{
 		// colors 
-		
-		clrs=new Couleur(); 
-		for(Checkbox c : clrs.couleurs) c.addItemListener(this);
-		
+		clrs=new Couleur(this); 
+	
 		// espace de dessin
-		drawingSpace= new Dessin(clrs.getSelectedColor());
-		drawingSpace.addMouseListener(this);
-		drawingSpace.addMouseMotionListener(this);
+		drawingSpace= new Dessin(clrs.getSelectedColor(),this);
 		
 		// menu de sortie
 		mFichier=new MenuSortie("Fichier");
@@ -34,9 +30,8 @@ public class Planch extends WindowAdapter implements MouseListener, ItemListener
 		outils=new Panel();
 		outils.setBackground(Color.lightGray);
 		
-		shapes=new Form();
+		shapes=new Form(this);
 		outils.add(shapes);
-		shapes.choix.addItemListener(this);
 
 		outils.add(clrs);
 		
@@ -61,9 +56,6 @@ public class Planch extends WindowAdapter implements MouseListener, ItemListener
 			public void windowClosing(WindowEvent e){System.exit(0);}
 		});
 		
-
-		 Image icon = new ImageIcon(this.getClass().getResource("/icon.png")).getImage();
-	     fenetre.setIconImage(icon);
 	}
 	
 	@Override
@@ -89,14 +81,25 @@ public class Planch extends WindowAdapter implements MouseListener, ItemListener
 	public void mouseClicked(MouseEvent e) {}
 	public void mousePressed(MouseEvent e) {
 		drawingSpace.pt1 = e.getPoint();
+		drawingSpace.pt2=e.getPoint();
 	}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 
+	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		drawingSpace.pt2=e.getPoint();
+		Point pt=e.getPoint();
+		
+		if(drawingSpace.pt1.x>pt.x) {
+		drawingSpace.pt1.x=pt.x;
+		}
+		if(drawingSpace.pt1.y>pt.y) {
+			drawingSpace.pt1.y=pt.y;
+			}
+		if(drawingSpace.pt1.x<pt.x || drawingSpace.pt1.y<pt.y ) drawingSpace.pt2=pt;
+		
 		drawingSpace.repaint();
 	}
 

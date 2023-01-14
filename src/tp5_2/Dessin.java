@@ -12,28 +12,41 @@ class Dessin extends Canvas  {
 	private Color crt;
 	boolean shapeElip;
 	boolean remplir;
-	public Dessin(Color c) {
+	Dimension dim;
+	public Dessin(Color c,Planch P) {
 		this.setBackground(Color.BLACK);
 		pt1=new Point();
 		pt2=new Point();
 		crt=c;
+		dim=new Dimension();
+		
+		this.addMouseListener(P);
+		this.addMouseMotionListener(P);
 	}
 	public void setColor(Color c){	crt=c;}
-	public void paint(Graphics g) {
-		int width,height;
 	
-		if(pt2.x>this.getWidth()-1) pt2.x=this.getWidth()-1;
-		if(pt2.y>this.getHeight()-1) pt2.y=this.getHeight()-1;
-		width=Math.abs((pt1.x-pt2.x));
-		height= Math.abs((pt1.y-pt2.y));
+	void limiteDessin()
+	{
+		if(this.pt2.x>this.getWidth()-1) this.pt2.x=this.getWidth()-1;
+		if(this.pt2.y>this.getHeight()-1) this.pt2.y=this.getHeight()-1;
+		if(this.pt1.x<=3) this.pt1.x=3;
+		if(this.pt1.y<=3) this.pt1.y=3;
+		this.dim.width=Math.abs((this.pt1.x-this.pt2.x));
+		this.dim.height= Math.abs((this.pt1.y-this.pt2.y));
+	}
+	public void paint(Graphics g) {
+	
+		
 		
 		g.setColor(crt);
+		
+		limiteDessin();
 		if(shapeElip==true) {
-			if(remplir) g.fillOval(pt1.x, pt1.y,width ,height);
-			else  g.drawOval(pt1.x, pt1.y,width ,height);
+			if(remplir) g.fillOval(pt1.x, pt1.y,dim.width ,dim.height);
+			else  g.drawOval(pt1.x, pt1.y,dim.width ,dim.height);
 		}else {
-			if(remplir)g.fillRect(pt1.x, pt1.y, width ,height);
-			else g.drawRect(pt1.x, pt1.y, width ,height);
+			if(remplir)g.fillRect(pt1.x, pt1.y, dim.width ,dim.height);
+			else g.drawRect(pt1.x, pt1.y, dim.width ,dim.height);
 
 		}
 	}

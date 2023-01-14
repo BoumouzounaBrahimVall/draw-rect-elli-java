@@ -8,23 +8,14 @@ class Couleur extends Panel  {
 	public Vector<Checkbox> couleurs ;
 	private Color SelectedColor;
 	private CheckboxGroup grpForms;
-	public Couleur() {
-		Vector<Color> clc ;
-		int colorsNumber=12;
-		clc=new Vector<>();
-		this.setLayout(new GridLayout(1,colorsNumber));
-		clc.add(Color.MAGENTA);
-		clc.add(Color.BLUE);
-		clc.add(Color.CYAN);
-		clc.add(Color.DARK_GRAY);
-		clc.add(Color.GRAY);
-		clc.add(Color.DARK_GRAY);
-		clc.add(Color.GREEN);
-		clc.add(Color.YELLOW);
-		clc.add(Color.ORANGE);
-		clc.add(Color.RED);
-		clc.add(Color.PINK);
+	
+	public Couleur(Planch p) {
+		
+		Vector<Color> clc= allColors();
 		clc.add(Color.WHITE);
+		int colorsNumber=clc.size();
+		this.setLayout(new GridLayout(1,colorsNumber));
+		
 		couleurs=new Vector<>();
 		SelectedColor=Color.WHITE;
 		
@@ -37,11 +28,30 @@ class Couleur extends Panel  {
 			couleurs.add(cc);
 			
 		}
-		for(Checkbox c : couleurs) this.add(c);
+		for(Checkbox c : couleurs)
+		{
+			this.add(c);
+			c.addItemListener(p);
 		
-		
+		}
+		 
 	}
-
+	private Vector<Color> allColors()
+	{
+		var clc=new Vector<Color>();
+		clc.add(Color.MAGENTA);
+		clc.add(Color.BLUE);
+		clc.add(Color.CYAN);
+		clc.add(Color.DARK_GRAY);
+		clc.add(Color.GRAY);
+		clc.add(Color.DARK_GRAY);
+		clc.add(Color.GREEN);
+		clc.add(Color.YELLOW);
+		clc.add(Color.ORANGE);
+		clc.add(Color.RED);
+		clc.add(Color.PINK);
+		return clc;
+	}
 	public Color getSelectedColor() {
 		return SelectedColor;
 	}
